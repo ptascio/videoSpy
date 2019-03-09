@@ -1,3 +1,28 @@
+
+
+
+function signIn(email, password){
+  firebase.auth().signInWithEmailAndPassword(email, password).
+  then(function(response){
+    console.log(response);
+  }).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(error);
+    // ...
+  });
+}
+
+
+// database.ref.child("users").orderByKey().limitToLast(1);
+  // database.ref("/employees").push().set({
+  //   name: empName,
+  //   role: empRole,
+  //   startDate: empStartDate,
+  //   monthlyRate: empMonthlyRate
+  // });
+
 // function getArtistName(){
 //   console.log($("#artistName").val());
 // }
@@ -16,24 +41,42 @@
 //   .then(function (result) {
 //     console.log(result.data);
 //   });
+// firebase.auth().signOut();
+function showFormData(e){
+  e.preventDefault();
+  var email = $("#email").val();
+  var password = $("#password").val();
+  // firebase.auth().signInWithEmailAndPassword(email, password).
+  // then(function(response){
+  //   console.log(response);
+  // }).catch(function(error) {
+  //   // Handle Errors here.
+  //   var errorCode = error.code;
+  //   var errorMessage = error.message;
+  //   console.log(error);
+  //   // ...
+  // });
+  signIn(email, password);
+}
+
+$("#submit").on("click", showFormData);
 
   function setCookie(cName, value, expiredays) {
       return localStorage.setItem(cName, value);
   }
 
   function getCookie(cName) {
-    console.log(localStorage.getItem(cName));
+    localStorage.getItem(cName);
 }
 
 function removeCookie(e){
-  console.log(e.data.param);
   localStorage.removeItem(e.data.param);
 }
 
-if (localStorage.getItem("Pete's cookie") === null){
-  setCookie("Pete's cookie", "This is my cookie");
+if (localStorage.getItem("petesCookie") === null){
+  setCookie("petesCookie", "This is my cookie");
 }else{
-  getCookie("Pete's cookie");
+  getCookie("petesCookie");
 }
 
 $("#removeCookie").on("click", {param: "Pete's cookie"}, removeCookie);
