@@ -3,16 +3,33 @@
   <head>
     <meta charset="utf-8">
     <title>Browser Fun</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
   </head>
   <body>
     <h1>Browser Fun</h1>
     <p>Some Text.</p>
+    <form action="" method="get" class="form-example">
+      <div class="form-example">
+        <label for="email">Enter your email: </label>
+        <input type="email" name="email" id="email" required>
+      </div>
+      <div class="form-example">
+        <label for="name">Enter your password: </label>
+        <input type="password" name="name" id="password" required>
+      </div>
+
+      <div class="form-example">
+        <input type="submit" value="Subscribe!" id="submit">
+      </div>
+    </form>
     <input type="text" name="" value="" id="artistName">
     <button type="button" name="button" id="button">Submit</button>
     <button type="button" name="button" id="removeCookie">Delete Cookies</button>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./assets/main.js">
-    </script>
+    <script type="text/javascript" src="./assets/main.js"></script>
+
   </body>
 </html>
