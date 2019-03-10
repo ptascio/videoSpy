@@ -87,7 +87,14 @@ $("#submit").on("click", showFormData);
 }
 
 function removeCookie(e){
-  localStorage.removeItem(e.data.param);
+  var localKeys = Object.keys(localStorage);
+  for(var i = 0; i < localKeys.length; i++){
+    if(localKeys[i].includes(e.data.param)){
+      localStorage.removeItem(localKeys[i]);
+      break;
+    }
+
+  }
 }
 
 function checkCookies(){
