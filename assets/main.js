@@ -1,13 +1,19 @@
+
+
+
 var thisIp;
+var thisUser;
 function grabIP(){
   $.ajax({
     url: "https://api.ipify.org",
     success: function(result){
-    console.log(result);
+    thisIp = result;
   },
     error: function(err){
       console.log(err.statusText);
     }
+}).done(function(){
+  checkCookies();
 });
 }
 
@@ -15,7 +21,8 @@ function grabLocalStorage(){
   console.log(localStorage);
 }
 
-grabLocalStorage();
+grabIP();
+
 
 function signIn(email, password){
   firebase.auth().signInWithEmailAndPassword(email, password).
@@ -97,16 +104,33 @@ function removeCookie(e){
   }
 }
 
+var userExists = false;
 function checkCookies(){
   var localKeys = Object.keys(localStorage);
   for(var i = 0; i < localKeys.length; i++){
-    console.log(localKeys[i].includes("pete"));
+    if(localKeys[i].includes("pete")){
+      userExists = true;
+      thisUser = localKeys[i];
+    }
+  }
+  if (!userExists){
+      setUser();
   }
 }
 
+function setUser(){
+  var newUserEntry = firebase.database().ref("/users").push();
+  var newKey = newUserEntry.key;
+  var newData = {
+    id: newKey,
+    ip: thisIp
+  };
+  newUserEntry.set(newData);
+}
 $("#findCookie").on("click", checkCookies);
 
-setCookie("petesCookie", "L-zs45", "yo");
+
+// setCookie("petesCookie", "L-zs45", "yo");
 
 // if (localStorage.getItem("petesCookie") === null){
 //   setCookie("petesCookie", "This is my cookie");
