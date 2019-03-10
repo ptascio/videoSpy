@@ -115,6 +115,8 @@ function checkCookies(){
   }
   if (!userExists){
       setUser();
+  }else{
+    retrieveUser();
   }
 }
 
@@ -126,6 +128,19 @@ function setUser(){
     ip: thisIp
   };
   newUserEntry.set(newData);
+  setCookie("petesCookie", newKey, thisIp);
+}
+
+function retrieveUser(){
+  var thisUserId = thisUser.split(" ");
+  thisUserId = thisUserId[1];
+  console.log(thisUserId);
+  var user = firebase.database().ref("/users").child(thisUserId);
+  user.on('value', function (snapshot){
+    snapshot.forEach(function(childSnapshot) {
+      console.log(childSnapshot.val());
+    });
+  });
 }
 $("#findCookie").on("click", checkCookies);
 
