@@ -76,8 +76,10 @@ function showFormData(e){
 
 $("#submit").on("click", showFormData);
 
-  function setCookie(cName, value, expiredays) {
-      return localStorage.setItem(cName, value);
+  function setCookie(cName, id, value, expiredays) {
+    cName += " " + id;
+    return localStorage.setItem(cName, value);
+
   }
 
   function getCookie(cName) {
@@ -88,10 +90,21 @@ function removeCookie(e){
   localStorage.removeItem(e.data.param);
 }
 
-if (localStorage.getItem("petesCookie") === null){
-  setCookie("petesCookie", "This is my cookie");
-}else{
-  getCookie("petesCookie");
+function checkCookies(){
+  var localKeys = Object.keys(localStorage);
+  for(var i = 0; i < localKeys.length; i++){
+    console.log(localKeys[i].includes("pete"));
+  }
 }
 
-$("#removeCookie").on("click", {param: "Pete's cookie"}, removeCookie);
+$("#findCookie").on("click", checkCookies);
+
+setCookie("petesCookie", "L-zs45", "yo");
+
+// if (localStorage.getItem("petesCookie") === null){
+//   setCookie("petesCookie", "This is my cookie");
+// }else{
+//   getCookie("petesCookie");
+// }
+
+$("#removeCookie").on("click", {param: "petesCookie"}, removeCookie);
