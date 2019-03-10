@@ -1,5 +1,21 @@
+var thisIp;
+function grabIP(){
+  $.ajax({
+    url: "https://api.ipify.org",
+    success: function(result){
+    console.log(result);
+  },
+    error: function(err){
+      console.log(err.statusText);
+    }
+});
+}
 
+function grabLocalStorage(){
+  console.log(localStorage);
+}
 
+grabLocalStorage();
 
 function signIn(email, password){
   firebase.auth().signInWithEmailAndPassword(email, password).
@@ -13,7 +29,6 @@ function signIn(email, password){
     // ...
   });
 }
-
 
 // database.ref.child("users").orderByKey().limitToLast(1);
   // database.ref("/employees").push().set({
