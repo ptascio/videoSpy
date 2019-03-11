@@ -17,33 +17,28 @@ function grabIP(){
 });
 }
 
-function grabLocalStorage(){
-  console.log(localStorage);
+var rightNow;
+function getTime(){
+  rightNow = new Date();
+  var thisHour = rightNow.getHours();
+  var thisMinutes = rightNow.getMinutes();
+  var thisSeconds = rightNow.getSeconds();
+  console.log(rightNow);
+  console.log(thisHour + " " + thisMinutes + " " + thisSeconds);
 }
 
 grabIP();
+getTime();
 
+function setTimeOnCookie(){
+  [`${thisUser}`].startTime = rightNow;
+  console.log(thisUser);
 
-function signIn(email, password){
-  firebase.auth().signInWithEmailAndPassword(email, password).
-  then(function(response){
-    console.log(response);
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(error);
-    // ...
-  });
 }
 
-// database.ref.child("users").orderByKey().limitToLast(1);
-  // database.ref("/employees").push().set({
-  //   name: empName,
-  //   role: empRole,
-  //   startDate: empStartDate,
-  //   monthlyRate: empMonthlyRate
-  // });
+
+
+
 
 // function getArtistName(){
 //   console.log($("#artistName").val());
@@ -63,33 +58,15 @@ function signIn(email, password){
 //   .then(function (result) {
 //     console.log(result.data);
 //   });
-// firebase.auth().signOut();
-function showFormData(e){
-  e.preventDefault();
-  var email = $("#email").val();
-  var password = $("#password").val();
-  // firebase.auth().signInWithEmailAndPassword(email, password).
-  // then(function(response){
-  //   console.log(response);
-  // }).catch(function(error) {
-  //   // Handle Errors here.
-  //   var errorCode = error.code;
-  //   var errorMessage = error.message;
-  //   console.log(error);
-  //   // ...
-  // });
-  signIn(email, password);
-}
 
-$("#submit").on("click", showFormData);
 
-  function setCookie(cName, id, value, expiredays) {
+function setCookie(cName, id, value, expiredays) {
     cName += " " + id;
-    return localStorage.setItem(cName, value);
-
+    var cookieHash = {"ip": value};
+    return localStorage.setItem(cName, cookieHash);
   }
 
-  function getCookie(cName) {
+function getCookie(cName) {
     localStorage.getItem(cName);
 }
 
@@ -100,7 +77,6 @@ function removeCookie(e){
       localStorage.removeItem(localKeys[i]);
       break;
     }
-
   }
 }
 
@@ -134,23 +110,15 @@ function setUser(){
 function retrieveUser(){
   var thisUserId = thisUser.split(" ");
   thisUserId = thisUserId[1];
-  console.log(thisUserId);
   var user = firebase.database().ref("/users").child(thisUserId);
+  thisUser = user;
   user.on('value', function (snapshot){
     snapshot.forEach(function(childSnapshot) {
       console.log(childSnapshot.val());
     });
   });
+  setTimeOnCookie();
 }
 $("#findCookie").on("click", checkCookies);
-
-
-// setCookie("petesCookie", "L-zs45", "yo");
-
-// if (localStorage.getItem("petesCookie") === null){
-//   setCookie("petesCookie", "This is my cookie");
-// }else{
-//   getCookie("petesCookie");
-// }
 
 $("#removeCookie").on("click", {param: "petesCookie"}, removeCookie);
