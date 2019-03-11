@@ -17,23 +17,22 @@ function grabIP(){
 });
 }
 
-var rightNow;
+var todayDate;
 function getTime(){
-  rightNow = new Date();
-  var thisHour = rightNow.getHours();
-  var thisMinutes = rightNow.getMinutes();
-  var thisSeconds = rightNow.getSeconds();
-  console.log(rightNow);
-  console.log(thisHour + " " + thisMinutes + " " + thisSeconds);
+  todayDate = new Date();
+  var thisHour = todayDate.getHours();
+  var thisMinutes = todayDate.getMinutes();
+  var thisSeconds = todayDate.getSeconds();
 }
 
 grabIP();
 getTime();
-
+var userCookie;
 function setTimeOnCookie(){
-  [`${thisUser}`].startTime = rightNow;
-  console.log(thisUser);
-
+  userCookie = localStorage.getItem(`${thisUser}`);
+  userCookie = JSON.parse(userCookie);
+  userCookie.today = todayDate;
+  console.log(userCookie);
 }
 
 
@@ -60,10 +59,12 @@ function setTimeOnCookie(){
 //   });
 
 
+//
+// console.log('retrievedObject: ', JSON.parse(retrievedObject));
 function setCookie(cName, id, value, expiredays) {
     cName += " " + id;
-    var cookieHash = {"ip": value};
-    return localStorage.setItem(cName, cookieHash);
+    var cookieHash = {"ip": `${value}`};
+    return localStorage.setItem(cName, JSON.stringify(cookieHash));
   }
 
 function getCookie(cName) {
@@ -111,10 +112,9 @@ function retrieveUser(){
   var thisUserId = thisUser.split(" ");
   thisUserId = thisUserId[1];
   var user = firebase.database().ref("/users").child(thisUserId);
-  thisUser = user;
   user.on('value', function (snapshot){
     snapshot.forEach(function(childSnapshot) {
-      console.log(childSnapshot.val());
+
     });
   });
   setTimeOnCookie();
