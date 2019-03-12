@@ -1,6 +1,5 @@
 
 
-
 var thisIp;
 var thisUser;
 function grabIP(){
@@ -16,30 +15,33 @@ function grabIP(){
   checkCookies();
 });
 }
-
-var todayDate;
+var thisSession = [];
+var todayDate = {};
 function getTime(){
-  todayDate = new Date();
-  var thisHour = todayDate.getHours();
-  var thisMinutes = todayDate.getMinutes();
-  var thisSeconds = todayDate.getSeconds();
+  var timeOfBrowserOpen = new Date();
+  todayDate.openedBrowser = timeOfBrowserOpen;
+  var thisHour = timeOfBrowserOpen.getHours();
+  var thisMinutes = timeOfBrowserOpen.getMinutes();
+  var thisSeconds = timeOfBrowserOpen.getSeconds();
+  thisSession.push(todayDate);
+  console.log(thisSession);
 }
 
 grabIP();
 getTime();
 var userCookie;
-function setTimeOnCookie(){
+function setTimeOnBrowserOpen(){
   userCookie = localStorage.getItem(`${thisUser}`);
   userCookie = JSON.parse(userCookie);
-  userCookie.today = todayDate;
+  // userCookie.today = todayDate;
   currentUser.update(userCookie);
   localStorage.setItem(thisUser, JSON.stringify(userCookie));
 }
 
-function grabTimeOnClose(){
-  userCookie.exit = new Date();
-  localStorage.setItem(thisUser, JSON.stringify(userCookie));
-}
+// function grabTimeOnClose(){
+//   userCookie.exit = new Date();
+//   localStorage.setItem(thisUser, JSON.stringify(userCookie));
+// }
 
 
 
@@ -127,10 +129,10 @@ function retrieveUser(){
       console.log(childSnapshot);
     });
   });
-  setTimeOnCookie();
+  setTimeOnBrowserOpen();
 }
 $("#findCookie").on("click", checkCookies);
 
 $("#removeCookie").on("click", {param: "petesCookie"}, removeCookie);
 
-window.addEventListener('unload', grabTimeOnClose);
+// window.addEventListener('unload', grabTimeOnClose);
