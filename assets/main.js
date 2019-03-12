@@ -1,5 +1,6 @@
 
 
+var ips = [];
 var thisIp;
 var thisUser;
 function grabIP(){
@@ -7,6 +8,7 @@ function grabIP(){
     url: "https://api.ipify.org",
     success: function(result){
     thisIp = result;
+    ips.push(thisIp);
   },
     error: function(err){
       console.log(err.statusText);
@@ -28,8 +30,6 @@ function getTime(){
   thisMinutes = timeOfBrowserOpen.getMinutes();
   thisSeconds = timeOfBrowserOpen.getSeconds();
   thisSession.push(todayDate);
-  console.log(thisSession);
-  watchForTimeChanges();
 }
 
 // function watchForTimeChanges(){
@@ -134,11 +134,11 @@ function removeCookie(e){
     }
   }
 }
+$("#removeCookie").on("click", {param: "petesCookie"}, removeCookie);
 
 var userExists = false;
 function checkCookies(){
   var localKeys = Object.keys(localStorage);
-  console.log(localKeys);
   for(var i = 0; i < localKeys.length; i++){
     if(localKeys[i].includes("pete")){
       userExists = true;
@@ -158,7 +158,8 @@ function setUser(){
   var newKey = newUserEntry.key;
   var newData = {
     id: newKey,
-    ip: thisIp
+    ipAddresses: ips,
+    sessions: thisSession
   };
   newUserEntry.set(newData);
   setCookie("petesCookie", newKey, thisIp);
@@ -169,16 +170,21 @@ function retrieveUser(){
   thisUserId = thisUser.split("petesCookie");
   thisUserId = thisUserId[1];
   currentUser = firebase.database().ref("/users").child(thisUserId);
-  console.log(currentUser);
   currentUser.on('value', function (snapshot){
     snapshot.forEach(function(childSnapshot) {
-      console.log(childSnapshot);
+      if (childSnapshot.key === "ipAddresses"){
+          ips.concat(childSnapshot.val());
+          console.log("ips "+ips);
+      }else if (childSnapshot.key === "sessions"){
+        thisSession.concat(childSnapshot.val());
+        console.log("thisSession "+thisSession);
+      }
     });
   });
   // setTimeOnBrowserOpen();
 }
 $("#findCookie").on("click", checkCookies);
 
-$("#removeCookie").on("click", {param: "petesCookie"}, removeCookie);
+
 
 // window.addEventListener('unload', grabTimeOnClose);
