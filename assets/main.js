@@ -32,7 +32,13 @@ function setTimeOnCookie(){
   userCookie = localStorage.getItem(`${thisUser}`);
   userCookie = JSON.parse(userCookie);
   userCookie.today = todayDate;
-  console.log(userCookie);
+  currentUser.update(userCookie);
+  localStorage.setItem(thisUser, JSON.stringify(userCookie));
+}
+
+function grabTimeOnClose(){
+  userCookie.exit = new Date();
+  localStorage.setItem(thisUser, JSON.stringify(userCookie));
 }
 
 
@@ -62,7 +68,7 @@ function setTimeOnCookie(){
 //
 // console.log('retrievedObject: ', JSON.parse(retrievedObject));
 function setCookie(cName, id, value, expiredays) {
-    cName += " " + id;
+    cName += id;
     var cookieHash = {"ip": `${value}`};
     return localStorage.setItem(cName, JSON.stringify(cookieHash));
   }
@@ -84,10 +90,12 @@ function removeCookie(e){
 var userExists = false;
 function checkCookies(){
   var localKeys = Object.keys(localStorage);
+  console.log(localKeys);
   for(var i = 0; i < localKeys.length; i++){
     if(localKeys[i].includes("pete")){
       userExists = true;
       thisUser = localKeys[i];
+      break;
     }
   }
   if (!userExists){
@@ -107,14 +115,16 @@ function setUser(){
   newUserEntry.set(newData);
   setCookie("petesCookie", newKey, thisIp);
 }
-
+var thisUserId;
+var currentUser;
 function retrieveUser(){
-  var thisUserId = thisUser.split(" ");
+  thisUserId = thisUser.split("petesCookie");
   thisUserId = thisUserId[1];
-  var user = firebase.database().ref("/users").child(thisUserId);
-  user.on('value', function (snapshot){
+  currentUser = firebase.database().ref("/users").child(thisUserId);
+  console.log(currentUser);
+  currentUser.on('value', function (snapshot){
     snapshot.forEach(function(childSnapshot) {
-
+      console.log(childSnapshot);
     });
   });
   setTimeOnCookie();
@@ -122,3 +132,5 @@ function retrieveUser(){
 $("#findCookie").on("click", checkCookies);
 
 $("#removeCookie").on("click", {param: "petesCookie"}, removeCookie);
+
+window.addEventListener('unload', grabTimeOnClose);
