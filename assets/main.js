@@ -17,14 +17,37 @@ function grabIP(){
 }
 var thisSession = [];
 var todayDate = {};
+var timeOfBrowserOpen;
+var thisHour;
+var thisMinutes;
+var thisSeconds;
 function getTime(){
-  var timeOfBrowserOpen = new Date();
+  timeOfBrowserOpen = new Date();
   todayDate.openedBrowser = timeOfBrowserOpen;
-  var thisHour = timeOfBrowserOpen.getHours();
-  var thisMinutes = timeOfBrowserOpen.getMinutes();
-  var thisSeconds = timeOfBrowserOpen.getSeconds();
+  thisHour = timeOfBrowserOpen.getHours();
+  thisMinutes = timeOfBrowserOpen.getMinutes();
+  thisSeconds = timeOfBrowserOpen.getSeconds();
   thisSession.push(todayDate);
   console.log(thisSession);
+  watchForTimeChanges();
+}
+
+// function watchForTimeChanges(){
+//   var timeChange = setInterval(
+//     logTimePassed, 1000
+//   );
+// }
+
+var laterTime;
+var laterHours;
+var laterMinutes;
+var laterSeconds;
+function logTimePassed(){
+  laterTime = new Date();
+  laterHours = laterTime.getHours();
+  laterMinutes = laterTime.getMinutes();
+  laterSeconds = laterTime.getSeconds();
+  console.log((laterSeconds - thisSeconds) + " seconds have passed");
 }
 
 grabIP();
@@ -129,7 +152,7 @@ function retrieveUser(){
       console.log(childSnapshot);
     });
   });
-  setTimeOnBrowserOpen();
+  // setTimeOnBrowserOpen();
 }
 $("#findCookie").on("click", checkCookies);
 
