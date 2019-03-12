@@ -4,6 +4,7 @@ var ips = [];
 var thisIp;
 var thisUser;
 function grabIP(){
+  getTime();
   $.ajax({
     url: "https://api.ipify.org",
     success: function(result){
@@ -29,7 +30,7 @@ function getTime(){
   thisHour = timeOfBrowserOpen.getHours();
   thisMinutes = timeOfBrowserOpen.getMinutes();
   thisSeconds = timeOfBrowserOpen.getSeconds();
-  thisSession.push(todayDate);
+  thisSession.push(timeOfBrowserOpen);
 }
 
 // function watchForTimeChanges(){
@@ -74,7 +75,7 @@ function parseSeconds(){
 }
 
 grabIP();
-getTime();
+
 var userCookie;
 function setTimeOnBrowserOpen(){
   userCookie = localStorage.getItem(`${thisUser}`);
@@ -154,6 +155,7 @@ function checkCookies(){
 }
 
 function setUser(){
+  console.log(thisSession);
   var newUserEntry = firebase.database().ref("/users").push();
   var newKey = newUserEntry.key;
   var newData = {
