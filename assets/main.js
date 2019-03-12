@@ -34,7 +34,7 @@ function getTime(){
 
 // function watchForTimeChanges(){
 //   var timeChange = setInterval(
-//     logTimePassed, 1000
+//     parseSeconds, 1000
 //   );
 // }
 
@@ -47,7 +47,30 @@ function logTimePassed(){
   laterHours = laterTime.getHours();
   laterMinutes = laterTime.getMinutes();
   laterSeconds = laterTime.getSeconds();
-  console.log((laterSeconds - thisSeconds) + " seconds have passed");
+  if (laterMinutes === thisMinutes+1){
+    console.log("a minute has passed");
+  }
+}
+
+var countSeconds = 0;
+var countMinutes = 0;
+var timeLog = {};
+function parseSeconds(){
+  if(countSeconds < 9){
+    countSeconds+=1;
+  }else{
+    countMinutes+=1;
+    countSeconds = 0;
+  }
+  timeLog.seconds = countSeconds;
+  timeLog.minutes = countMinutes;
+  if(thisSession[1]){
+    thisSession[1] = timeLog;
+  }else{
+    thisSession.push(timeLog);
+  }
+
+  console.log(thisSession);
 }
 
 grabIP();
