@@ -1,10 +1,11 @@
 
 
 var ips = [];
+var thisSession = [];
+var timeOfBrowserOpen;
 var thisIp;
 var thisUser;
 function grabIP(){
-  getTime();
   $.ajax({
     url: "https://api.ipify.org",
     success: function(result){
@@ -14,23 +15,28 @@ function grabIP(){
     error: function(err){
       console.log(err.statusText);
     }
+}).then(function(){
+  console.log("getting time");
+  timeOfBrowserOpen = new Date();
+  thisSession.push(timeOfBrowserOpen);
 }).done(function(){
   checkCookies();
 });
 }
-var thisSession = [];
+
 var todayDate = {};
-var timeOfBrowserOpen;
+
 var thisHour;
 var thisMinutes;
 var thisSeconds;
 function getTime(){
   timeOfBrowserOpen = new Date();
+  thisSession.push(timeOfBrowserOpen);
   todayDate.openedBrowser = timeOfBrowserOpen;
   thisHour = timeOfBrowserOpen.getHours();
   thisMinutes = timeOfBrowserOpen.getMinutes();
   thisSeconds = timeOfBrowserOpen.getSeconds();
-  thisSession.push(timeOfBrowserOpen);
+
 }
 
 // function watchForTimeChanges(){
@@ -160,10 +166,14 @@ function setUser(){
   var newKey = newUserEntry.key;
   var newData = {
     id: newKey,
+    sessions: thisSession,
     ipAddresses: ips,
-    sessions: thisSession
   };
-  newUserEntry.set(newData);
+  newUserEntry.set(newData, function(error){
+    if (error){
+      console.log(error);
+    }
+  });
   setCookie("petesCookie", newKey, thisIp);
 }
 var thisUserId;
