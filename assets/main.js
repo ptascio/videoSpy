@@ -17,6 +17,7 @@ function grabIP(){
     }
 }).then(function(){
   timeOfBrowserOpen = new Date();
+
   thisSession.push(timeOfBrowserOpen);
 }).done(function(){
   checkCookies();
@@ -178,6 +179,7 @@ var thisUserId;
 var currentUser;
 var dataSession;
 function retrieveUser(){
+  console.log("retrieving");
   thisUserId = thisUser.split("petesCookie");
   thisUserId = thisUserId[1];
   currentUser = firebase.database().ref("/users").child(thisUserId);
@@ -198,6 +200,9 @@ function retrieveUser(){
   // setTimeOnBrowserOpen();
 }
 
+//how to parse dates:
+//new Date(JSON.parse(JSON.stringify(date)));
+//https://stackoverflow.com/questions/11491938/issues-with-date-when-using-json-stringify-and-json-parse
 function updateCurrentUser(){
   console.log("update");
   firebase.database().ref("/users").child(thisUserId).update({
