@@ -16,7 +16,6 @@ function grabIP(){
       console.log(err.statusText);
     }
 }).then(function(){
-  console.log("getting time");
   timeOfBrowserOpen = new Date();
   thisSession.push(timeOfBrowserOpen);
 }).done(function(){
@@ -161,7 +160,6 @@ function checkCookies(){
 }
 
 function setUser(){
-  console.log(thisSession);
   var newUserEntry = firebase.database().ref("/users").push();
   var newKey = newUserEntry.key;
   var newData = {
@@ -178,6 +176,7 @@ function setUser(){
 }
 var thisUserId;
 var currentUser;
+var dataSession;
 function retrieveUser(){
   thisUserId = thisUser.split("petesCookie");
   thisUserId = thisUserId[1];
@@ -186,15 +185,28 @@ function retrieveUser(){
     snapshot.forEach(function(childSnapshot) {
       if (childSnapshot.key === "ipAddresses"){
           ips.concat(childSnapshot.val());
-          console.log("ips "+ips);
+
       }else if (childSnapshot.key === "sessions"){
-        thisSession.concat(childSnapshot.val());
+        console.log(childSnapshot.val());
+        dataSession = childSnapshot.val();
+        console.log(thisSession);
+        thisSession = thisSession.concat(dataSession);
         console.log("thisSession "+thisSession);
       }
     });
   });
   // setTimeOnBrowserOpen();
 }
+
+function updateCurrentUser(){
+  console.log("update");
+  firebase.database().ref("/users").child(thisUserId).update({
+    sessions: thisSession,
+    ipAddresses: ips
+  });
+}
+
+$("#upDateUser").on("click", updateCurrentUser);
 $("#findCookie").on("click", checkCookies);
 
 
