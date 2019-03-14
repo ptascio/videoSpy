@@ -186,7 +186,7 @@ function retrieveUser(){
   currentUser.on('value', function (snapshot){
     snapshot.forEach(function(childSnapshot) {
       if (childSnapshot.key === "ipAddresses"){
-          ips.concat(childSnapshot.val());
+          ips = ips.concat(childSnapshot.val());
 
       }else if (childSnapshot.key === "sessions"){
         console.log(childSnapshot.val());
