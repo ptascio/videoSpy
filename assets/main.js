@@ -104,7 +104,7 @@ function setTimeOnBrowserOpen(){
 //   console.log($("#artistName").val());
 // }
 //
-// $("#button").on("click", getArtistName);
+
 //
 // const instance = axios.create({
 //   headers: {
@@ -178,6 +178,8 @@ function setUser(){
 var thisUserId;
 var currentUser;
 var dataSession;
+//maybe better to do something like:
+//.ref("/users").child(thisUserId).child("ipAddresses").push()
 function retrieveUser(){
   console.log("retrieving");
   thisUserId = thisUser.split("petesCookie");
@@ -210,9 +212,13 @@ function updateCurrentUser(){
   });
 }
 
+function resetIp(){
+  ips = [];
+}
+$("#button").on("click", resetIp);
 $("#upDateUser").on("click", updateCurrentUser);
 $("#findCookie").on("click", checkCookies);
 
 
 
-// window.addEventListener('unload', grabTimeOnClose);
+window.addEventListener('unload', updateCurrentUser);
