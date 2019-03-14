@@ -186,14 +186,13 @@ function retrieveUser(){
   currentUser.on('value', function (snapshot){
     snapshot.forEach(function(childSnapshot) {
       if (childSnapshot.key === "ipAddresses"){
-          ips = ips.concat(childSnapshot.val());
-
+          ips = childSnapshot.val();
+          if(!ips.includes(thisIp)){
+            ips.push(thisIp);
+          }
       }else if (childSnapshot.key === "sessions"){
-        console.log(childSnapshot.val());
         dataSession = childSnapshot.val();
-        console.log(thisSession);
         thisSession = thisSession.concat(dataSession);
-        console.log("thisSession "+thisSession);
       }
     });
   });
