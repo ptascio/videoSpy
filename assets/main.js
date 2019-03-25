@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 
 var ips = [];
 var thisSession = [];
@@ -211,6 +211,9 @@ function updateCurrentUser(){
     ipAddresses: ips
   });
 }
+
+
+
 
 function resetIp(){
   ips = [];
