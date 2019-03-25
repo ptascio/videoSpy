@@ -1,0 +1,23 @@
+{
+  "name": "videoSpy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ptascio/videoSpy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ptascio/videoSpy/issues"
+  },
+  "homepage": "https://github.com/ptascio/videoSpy#readme",
+  "dependencies": {
+    "dotenv": "^7.0.0"
+  }
+}
