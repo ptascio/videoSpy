@@ -1,4 +1,3 @@
-console.log(process.env.FIREBASE_KEY);
 
 exports.firebase = {
   key: process.env.FIREBASE_KEY,

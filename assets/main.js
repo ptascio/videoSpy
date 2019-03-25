@@ -1,6 +1,8 @@
-require('dotenv').config();
-var keys = require("./keys");
-console.log(keys);
+require('dotenv').config({path:'../.env'});
+var keys = require("../keys");
+var config = keys.firebase;
+
+firebase.initializeApp(config);
 
 var ips = [];
 var thisSession = [];
