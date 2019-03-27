@@ -1,3 +1,4 @@
+require('dotenv').config();
 
 exports.firebase = {
   key: process.env.FIREBASE_KEY,
