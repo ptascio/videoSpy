@@ -1,7 +1,7 @@
 require('dotenv').config({path:'../.env'});
 var keys = require("../keys");
 var config = keys.firebase;
-
+console.log(keys);
 firebase.initializeApp(config);
 
 var ips = [];
